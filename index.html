@@ -60,7 +60,16 @@
   .tester:focus { box-shadow: 0 0 0 2px var(--line); }
   .tester.no-calt { font-feature-settings: "calt" 0; }
 
-  .alt { display: flex; flex-wrap: wrap; gap: 8px 32px; font-family: Chacara; color: var(--ink); font-size: 64px; letter-spacing: .1em; }
+  .versions { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+  .vcard { background: var(--chip); border-radius: 8px; padding: 14px 18px 12px; }
+  .vcard h3 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .vcard .row { display: flex; gap: 22px; align-items: flex-end; }
+  .vcard figure { margin: 0; text-align: center; }
+  .vcard figcaption { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .g { font-family: Chacara; color: var(--ink); font-size: 88px; line-height: 1; font-feature-settings: "calt" 0; }
+  .g.v2 { font-feature-settings: "calt" 0, "ss01" 1; }
+  .g.v3 { font-feature-settings: "calt" 0, "ss02" 1; }
+  .inline-demo { font-family: Chacara; color: var(--ink); font-size: 28px; white-space: nowrap; }
   .samples p { font-family: Chacara; color: var(--ink); margin: 0 0 12px; line-height: 1.1; overflow-wrap: anywhere; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
@@ -78,7 +87,7 @@
   @media (max-width: 760px) {
     .compare, .install { grid-template-columns: 1fr; }
     .tester { font-size: 48px; }
-    .alt { font-size: 44px; }
+    .g { font-size: 72px; }
     .samples p { font-size: min(var(--fs), 11vw) !important; }
   }
 </style>
@@ -121,8 +130,25 @@
 
     <section>
       <h2>Versões de cada letra</h2>
-      <p class="lede">Na placa, cada letra repetida foi recortada de um jeito. A fonte guarda essas versões e alterna entre elas sozinha quando a letra se repete, para o texto não parecer carimbado.</p>
-      <div class="alt"><span>AAA</span><span>CCC</span><span>RR</span><span>SS</span><span>OO</span><span>HH</span><span>II</span></div>
+      <p class="lede">Como foram recortadas à mão, as letras repetidas da placa nunca saíram iguais. A fonte guarda essas versões e alterna entre elas sozinha quando a letra se repete, para o texto não parecer carimbado. As diferenças são sutis, como na placa.</p>
+      <div class="versions">
+        <div class="vcard"><h3>A · 3 recortes da placa</h3><div class="row">
+          <figure><div class="g">A</div><figcaption>1</figcaption></figure>
+          <figure><div class="g v2">A</div><figcaption>2</figcaption></figure>
+          <figure><div class="g v3">A</div><figcaption>3</figcaption></figure></div></div>
+        <div class="vcard"><h3>C · 3 recortes da placa</h3><div class="row">
+          <figure><div class="g">C</div><figcaption>1</figcaption></figure>
+          <figure><div class="g v2">C</div><figcaption>2</figcaption></figure>
+          <figure><div class="g v3">C</div><figcaption>3</figcaption></figure></div></div>
+        <div class="vcard"><h3>R · 2 recortes da placa</h3><div class="row">
+          <figure><div class="g">R</div><figcaption>1</figcaption></figure>
+          <figure><div class="g v2">R</div><figcaption>2</figcaption></figure></div></div>
+        <div class="vcard"><h3>S · 2 recortes da placa</h3><div class="row">
+          <figure><div class="g">S</div><figcaption>1</figcaption></figure>
+          <figure><div class="g v2">S</div><figcaption>2</figcaption></figure></div></div>
+      </div>
+      <p class="lede" style="margin-top:20px">Escrevendo normalmente, a troca acontece sozinha: <span class="inline-demo">ARARA · CASCA · ASSAR</span></p>
+      <p class="lede">No Figma, Illustrator ou InDesign, dá para fixar uma versão pelos conjuntos estilísticos 1 e 2.</p>
     </section>
 
     <section class="samples">

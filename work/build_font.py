@@ -137,6 +137,10 @@ def var_idx(g):
     return int(g.split('.alt')[1]) if '.alt' in g else 0
 letter_like = [g for g in order if base_of(g) in registry.LETTERS or g in COMPOSE or g in DIG]
 fea = ['languagesystem DFLT dflt;', 'languagesystem latn dflt;', '']
+# stylistic sets: pick a specific version of every letter (ss01 = 2nd version, ss02 = 3rd)
+for k, label in [(1, 'Segunda versão das letras'), (2, 'Terceira versão das letras')]:
+    subs = [f'  sub {X} by {X}.alt{k};' for X, r in registry.LETTERS.items() if len(r) > k]
+    fea += [f'feature ss0{k} {{', f'  featureNames {{ name "{label}"; }};'] + subs + [f'}} ss0{k};', '']
 fea.append('feature calt {')
 for X, recipes in registry.LETTERS.items():
     n = len(recipes)
