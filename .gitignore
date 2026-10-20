@@ -1,0 +1,12 @@
+# intermediários gerados por ./gerar_fonte.sh
+work/raw/
+work/norm/
+work/masks/
+work/*.png
+work/*.npy
+work/*.html
+work/*.fea
+work/*.otf
+__pycache__/
+.claude/
+.DS_Store

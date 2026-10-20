@@ -1,0 +1,15 @@
+FONTE CHACARA
+Feita a partir das letras de madeira da placa da Chácara São Francisco.
+
+COMO INSTALAR
+- Mac: dê dois cliques em Chacara-Regular.otf e clique em "Instalar fonte".
+- Windows: clique com o botão direito em Chacara-Regular.ttf e escolha "Instalar".
+- Canva / Google Docs / sites: use o arquivo .ttf.
+
+DICAS
+- Só tem maiúsculas: digitar em minúsculo mostra as mesmas letras.
+- Letras repetidas mudam de versão sozinhas (como na placa). Isso funciona
+  em programas com recursos OpenType ("ligaduras/alternativas contextuais"
+  ligadas): Mac, Adobe, Figma, navegadores e Word.
+
+Página da fonte: https://joaovitormiguel.github.io/fonte-chacara/
