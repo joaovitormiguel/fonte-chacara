@@ -83,7 +83,7 @@ COMPOSE = {
     'Ccedilla': ('C', 'cedilla', 0xC7),
 }
 ACC_OFFSET = {'acute': (18, 0), 'grave': (-18, 0)}
-for nm, (base, acc, cp) in COMPOSE.items():
+def make_composite(base, acc):
     bcs, adv = glyphs[base]
     acs, (aw, ah) = accent_cs(acc)
     cx, top = top_center(base)
@@ -95,7 +95,21 @@ for nm, (base, acc, cp) in COMPOSE.items():
     else:
         dx, dy = ACC_OFFSET.get(acc, (0, 0))
         a = shift(acs, cx + dx, max(top, 700) + 42 + dy)
-    glyphs[nm] = (bcs + a, adv)
+    return (bcs + a, adv)
+
+for nm, (base, acc, cp) in COMPOSE.items():
+    glyphs[nm] = make_composite(base, acc)
+
+# lowercase = 2nd version of each letter (so the version can be chosen just by typing case,
+# even in apps without OpenType support). Accented lowercase use that same version.
+def lower_glyph(c):
+    return f'{c}.alt1' if f'{c}.alt1' in glyphs else c
+LC_COMPOSE = {}
+for nm, (base, acc, cp) in COMPOSE.items():
+    if lower_glyph(base) != base:
+        lnm = nm[0].lower() + nm[1:]          # Aacute -> aacute (AGL name)
+        glyphs[lnm] = make_composite(lower_glyph(base), acc)
+        LC_COMPOSE[lnm] = (base, acc, cp + 0x20)
 
 # spacing accents
 for acc in registry.ACCENTS:
@@ -112,7 +126,7 @@ glyphs['.notdef'] = ([], 500)
 # ---------------------------------------------------------------- cmap
 cmap = {0x20: 'space', 0xA0: 'nbspace'}
 for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-    cmap[ord(c)] = c; cmap[ord(c.lower())] = c
+    cmap[ord(c)] = c; cmap[ord(c.lower())] = lower_glyph(c)
 DIG = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 for i, d in enumerate(DIG): cmap[0x30 + i] = d
 PUNCT_CP = {'period': 0x2E, 'comma': 0x2C, 'colon': 0x3A, 'semicolon': 0x3B, 'exclam': 0x21, 'question': 0x3F,
@@ -126,7 +140,9 @@ PUNCT_CP = {'period': 0x2E, 'comma': 0x2C, 'colon': 0x3A, 'semicolon': 0x3B, 'ex
 cmap.update({cp: nm for nm, cp in PUNCT_CP.items()})
 cmap[0x7E] = 'tilde'; cmap[0x5E] = 'circumflex'; cmap[0x2010] = 'hyphen'; cmap[0x2212] = 'hyphen'
 for nm, (b, a, cp) in COMPOSE.items():
-    cmap[cp] = nm; cmap[cp + 0x20] = nm   # lowercase accented -> same glyph
+    cmap[cp] = nm; cmap[cp + 0x20] = nm   # lowercase accented (replaced below when a 2nd version exists)
+for lnm, (b, a, cp) in LC_COMPOSE.items():
+    cmap[cp] = lnm
 
 order = ['.notdef', 'space', 'nbspace'] + sorted(n for n in glyphs if n not in ('.notdef', 'space', 'nbspace'))
 
@@ -135,7 +151,8 @@ def base_of(g):
     return g.split('.')[0]
 def var_idx(g):
     return int(g.split('.alt')[1]) if '.alt' in g else 0
-letter_like = [g for g in order if base_of(g) in registry.LETTERS or g in COMPOSE or g in DIG]
+# calt context = 1st-version glyphs only, so letters typed in lowercase (2nd version) are never overridden
+letter_like = [g for g in order if g in registry.LETTERS or g in COMPOSE or g in DIG]
 fea = ['languagesystem DFLT dflt;', 'languagesystem latn dflt;', '']
 # stylistic sets: pick a specific version of every letter (ss01 = 2nd version, ss02 = 3rd)
 for k, label in [(1, 'Segunda versão das letras'), (2, 'Terceira versão das letras')]:
@@ -205,6 +222,7 @@ classes = {}
 for g in order:
     b = base_of(g)
     if g in COMPOSE: b = COMPOSE[g][0]
+    if g in LC_COMPOSE: b = LC_COMPOSE[g][0]
     if b in kern_glyphs:
         classes.setdefault(b, []).append(g)
 fea.append('')

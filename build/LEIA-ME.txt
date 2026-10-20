@@ -7,9 +7,10 @@ COMO INSTALAR
 - Canva / Google Docs / sites: use o arquivo .ttf.
 
 DICAS
-- Só tem maiúsculas: digitar em minúsculo mostra as mesmas letras.
-- Letras repetidas mudam de versão sozinhas (como na placa). Isso funciona
-  em programas com recursos OpenType ("ligaduras/alternativas contextuais"
-  ligadas): Mac, Adobe, Figma, navegadores e Word.
+- Só tem maiúsculas. Digitar em minúsculo mostra uma SEGUNDA VERSÃO de cada
+  letra (como na placa, onde nenhuma letra repetida saiu igual).
+  Alterne maiúscula e minúscula para variar: ArArA, CaScA.
+- Em programas com recursos OpenType (Mac, Adobe, Figma, navegadores),
+  maiúsculas repetidas também variam sozinhas.
 
 Página da fonte: https://joaovitormiguel.github.io/fonte-chacara/
